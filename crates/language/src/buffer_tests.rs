@@ -1690,6 +1690,7 @@ fn test_language_scope_at_with_javascript(cx: &mut AppContext) {
                         Vec::new(), //
                         vec!["string".into()],
                     ],
+                    forced_close_scopes_by_bracket_ix: Vec::new(),
                 },
                 overrides: [(
                     "element".into(),
@@ -1734,7 +1735,7 @@ fn test_language_scope_at_with_javascript(cx: &mut AppContext) {
         assert_eq!(config.line_comment_prefixes().unwrap(), &[Arc::from("// ")]);
         // Both bracket pairs are enabled
         assert_eq!(
-            config.brackets().map(|e| e.1).collect::<Vec<_>>(),
+            config.brackets().map(|e| e.enabled).collect::<Vec<_>>(),
             &[true, true]
         );
 
@@ -1747,7 +1748,10 @@ fn test_language_scope_at_with_javascript(cx: &mut AppContext) {
         );
         // Second bracket pair is disabled
         assert_eq!(
-            string_config.brackets().map(|e| e.1).collect::<Vec<_>>(),
+            string_config
+                .brackets()
+                .map(|e| e.enabled)
+                .collect::<Vec<_>>(),
             &[true, false]
         );
 
@@ -1761,7 +1765,10 @@ fn test_language_scope_at_with_javascript(cx: &mut AppContext) {
             Some((&"{/*".into(), &"*/}".into()))
         );
         assert_eq!(
-            element_config.brackets().map(|e| e.1).collect::<Vec<_>>(),
+            element_config
+                .brackets()
+                .map(|e| e.enabled)
+                .collect::<Vec<_>>(),
             &[true, true]
         );
 
@@ -1774,7 +1781,7 @@ fn test_language_scope_at_with_javascript(cx: &mut AppContext) {
             &[Arc::from("// ")]
         );
         assert_eq!(
-            tag_config.brackets().map(|e| e.1).collect::<Vec<_>>(),
+            tag_config.brackets().map(|e| e.enabled).collect::<Vec<_>>(),
             &[true, true]
         );
 
@@ -1791,7 +1798,7 @@ fn test_language_scope_at_with_javascript(cx: &mut AppContext) {
         assert_eq!(
             expression_in_element_config
                 .brackets()
-                .map(|e| e.1)
+                .map(|e| e.enabled)
                 .collect::<Vec<_>>(),
             &[true, true]
         );
@@ -1827,6 +1834,7 @@ fn test_language_scope_at_with_rust(cx: &mut AppContext) {
                         Vec::new(), //
                         vec!["string".into()],
                     ],
+                    forced_close_scopes_by_bracket_ix: Vec::new(),
                 },
                 ..Default::default()
             },
@@ -1855,7 +1863,7 @@ fn test_language_scope_at_with_rust(cx: &mut AppContext) {
         // By default, all brackets are enabled
         let config = snapshot.language_scope_at(0).unwrap();
         assert_eq!(
-            config.brackets().map(|e| e.1).collect::<Vec<_>>(),
+            config.brackets().map(|e| e.enabled).collect::<Vec<_>>(),
             &[true, true]
         );
 
@@ -1864,7 +1872,10 @@ fn test_language_scope_at_with_rust(cx: &mut AppContext) {
             .language_scope_at(text.find("ello").unwrap())
             .unwrap();
         assert_eq!(
-            string_config.brackets().map(|e| e.1).collect::<Vec<_>>(),
+            string_config
+                .brackets()
+                .map(|e| e.enabled)
+                .collect::<Vec<_>>(),
             &[true, false]
         );
 
