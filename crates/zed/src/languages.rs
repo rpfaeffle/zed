@@ -365,6 +365,7 @@ const QUERY_FILENAME_PREFIXES: &[(
     ("injections", |q| &mut q.injections),
     ("overrides", |q| &mut q.overrides),
     ("redactions", |q| &mut q.redactions),
+    ("step_back_overrides", |q| &mut q.step_back_overrides),
 ];
 
 fn load_queries(name: &str) -> LanguageQueries {
